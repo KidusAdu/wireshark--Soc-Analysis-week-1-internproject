@@ -1,0 +1,38 @@
+# Lab 01: Identify the Attacker's IP Address
+
+## 1. Objective
+Identify the suspicious or attacker IP address from the provided network traffic capture.
+
+## 2. Tools Used
+- Wireshark
+
+## 3. Investigation Process
+
+Step 1: Open the provided network capture.
+
+Step 2: Examine the communication between network devices.
+
+Step 3: Analyze source and destination IP addresses.
+
+Step 4: Identify unusual or suspicious communication patterns.
+
+Step 5: Record the relevant evidence.
+
+## 4. Findings
+
+- Attacker IP: [Insert your verified finding]
+- Target IP: [Insert your verified finding]
+- Relevant Protocol: [Insert protocol]
+- Evidence: [Add screenshot]
+
+## 5. Security Impact
+
+Explain what the suspicious network activity means and its possible impact.
+
+## 6. Recommendations
+
+Explain how the organization could detect, prevent, or respond to this activity.
+
+## 7. Conclusion
+
+Summarize what you learned from this investigation.

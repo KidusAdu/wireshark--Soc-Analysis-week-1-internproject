@@ -1,71 +1,157 @@
-# Wireshark SOC Analyst – Network Traffic Investigation
+# 🔍 Wireshark SOC Lab: Identify the Attacker's IP
 
-## Project Overview
+![Wireshark](https://img.shields.io/badge/Tool-Wireshark-blue?logo=wireshark)
+![Category](https://img.shields.io/badge/Domain-Cybersecurity-red)
+![Focus](https://img.shields.io/badge/Focus-Network%20Traffic%20Analysis-green)
+![Lab](https://img.shields.io/badge/Type-Hands--On%20SOC%20Lab-orange)
 
-This project demonstrates practical Security Operations Center (SOC) investigation skills using Wireshark.
+## 📌 Project Overview
 
-The objective is to analyze network traffic captures, identify suspicious activities, investigate potential security threats, and understand how attackers exploit network communication.
+This project demonstrates a practical network traffic investigation using **Wireshark**, a network protocol analyzer.
 
-## Project Objectives
+The scenario involved investigating unusual network traffic reported on a company's web server. Acting as a SOC analyst, I captured and analyzed network packets to identify the suspicious source IP address, examine TCP connection attempts, and determine the type of network activity.
 
-- Analyze network traffic using Wireshark.
-- Identify suspicious IP addresses.
-- Investigate TCP communication streams.
-- Understand HTTP security vulnerabilities.
-- Detect brute-force login attempts.
-- Investigate VoIP communication.
+The investigation identified a TCP SYN port scan originating from a suspicious host.
 
-## Tools and Technologies
+## 🎯 Project Objectives
 
-- Wireshark
-- TCP/IP
-- HTTP
-- Network Traffic Analysis
-- PCAP Analysis
-- SOC Investigation Techniques
+- Capture and analyze network traffic using Wireshark.
+- Understand TCP three-way handshake behavior.
+- Apply Wireshark display filters.
+- Identify suspicious source and destination IP addresses.
+- Investigate TCP SYN requests.
+- Identify open and closed server ports.
+- Recognize indicators of a TCP SYN port scan.
 
-## Practical Labs
+## 🛠️ Tools and Technologies
 
-| Lab | Investigation | Status |
-|---|---|---|
-| 01 | Identify the Attacker's IP | Completed / Pending |
-| 02 | Follow TCP Stream 1 | Completed / Pending |
-| 03 | Follow TCP Stream Part 2 | Completed / Pending |
-| 04 | HTTP Plain Text Credentials | Completed / Pending |
-| 05 | Catch the Brute Force Attacker | Completed / Pending |
-| 06 | Catch the Call Scammer | Completed / Pending |
+| Tool | Purpose |
+|---|---|
+| Wireshark | Network packet capture and analysis |
+| Windows | Lab environment |
+| TCP/IP | Network communication analysis |
+| Display Filters | Investigating suspicious packets |
 
-## Investigation Methodology
+## 🔬 Investigation Methodology
 
-For each lab:
+### Step 1: Capture Network Traffic
 
-1. Understand the security investigation scenario.
-2. Examine the network traffic.
-3. Apply appropriate Wireshark filters.
-4. Investigate suspicious communication.
-5. Identify relevant security indicators.
-6. Document findings with screenshots.
-7. Explain the security impact.
-8. Provide recommendations.
+Started the Wireshark application and captured network traffic from the available Wi-Fi interface.
 
-## Skills Demonstrated
+**Result:** 309 packets captured.
 
-- Network Traffic Analysis
-- TCP/IP Protocol Investigation
-- Threat Detection
-- Brute Force Detection
-- HTTP Security Analysis
-- Digital Investigation
-- SOC Analyst Fundamentals
+### Step 2: Filter TCP SYN Packets
 
-## Learning Outcomes
+Applied the following Wireshark display filter:
 
-Through this project, I developed practical experience in investigating network traffic, identifying suspicious communication, and understanding common cybersecurity threats.
+```wireshark
+tcp.flags.syn == 1
+```
 
-## Author
+This filter displays TCP packets where the SYN flag is set.
 
-Cybersecurity Student | Aspiring SOC Analyst
+**Result:** 73 packets displayed.
 
-## Disclaimer
+### Step 3: Identify the Suspicious Source IP
 
-This project is intended for educational purposes. All investigations are performed using authorized training labs and practice captures. No unauthorized network activity is performed.
+Analyzed the Source column and identified an IP address repeatedly sending TCP SYN requests to the server.
+
+**Suspicious source IP:** `192.168.10.66`
+
+### Step 4: Identify the Target Server
+
+Examined the Destination column to identify the server receiving the connection attempts.
+
+**Target IP:** `192.168.10.20`
+
+### Step 5: Investigate TCP Source Port
+
+Inspected the TCP header and identified the repeated source port shown in the packets.
+
+**Source port:** `52311`
+
+### Step 6: Analyze Port Scanning Activity
+
+Investigated the suspicious host's connection attempts against different destination ports.
+
+**Result:** 40 different destination ports were tested.
+
+### Step 7: Identify Open Ports
+
+Analyzed the server responses and identified the ports that responded with SYN, ACK.
+
+**Open ports:**
+- 22 – SSH
+- 80 – HTTP
+- 443 – HTTPS
+
+### Step 8: Identify Closed Ports
+
+Observed the server's response to unsuccessful connection attempts.
+
+**Closed-port response:**
+
+```text
+RST, ACK
+```
+
+This indicates that the connection attempt was rejected because the destination port was closed.
+
+### Step 9: Calculate Closed Ports
+
+Total ports tested: 40
+
+Open ports: 3
+
+Closed ports: 37
+
+### Step 10: Determine the Attack Type
+
+Based on repeated TCP SYN connection attempts against multiple destination ports, the activity was identified as a:
+
+**TCP SYN Port Scan**
+
+## 📊 Final Investigation Results
+
+| Indicator | Finding |
+|---|---|
+| Total captured packets | 309 |
+| Displayed SYN packets | 73 |
+| Suspicious IP | 192.168.10.66 |
+| Target server | 192.168.10.20 |
+| Source port observed | 52311 |
+| Destination ports tested | 40 |
+| Open ports | 22, 80, 443 |
+| Closed ports | 37 |
+| Attack classification | TCP SYN Port Scan |
+
+## 📸 Screenshots and Evidence
+
+Screenshots from the practical investigation are available in the `screenshots/` directory.
+
+They document the packet capture, TCP filtering, suspicious IP identification, port analysis, and final attack classification.
+
+## 🧠 Key Learning Outcomes
+
+Through this hands-on lab, I improved my understanding of:
+
+1. How network packets travel between devices.
+2. How to investigate suspicious network traffic.
+3. How TCP SYN and RST/ACK flags work.
+4. How to use Wireshark display filters.
+5. How to identify potential port scanning activities.
+6. How SOC analysts investigate network-based security events.
+
+## 🛡️ Conclusion
+
+This practical exercise demonstrated how Wireshark can help security analysts investigate suspicious network activities and identify potential reconnaissance attempts.
+
+The investigation successfully identified `192.168.10.66` as the suspicious source, `192.168.10.20` as the target server, and TCP SYN port scanning as the observed activity.
+
+**Learning by doing. Building practical cybersecurity skills one lab at a time.**
+
+---
+
+**Disclaimer:** This project was performed in an authorized educational lab environment. The IP addresses and findings are from the provided lab exercise and should not be interpreted as evidence of a real-world attack.
+
+**#CyberSecurity #Wireshark #SOCAnalyst #NetworkSecurity #PacketAnalysis #BlueTeam #CyberSecurityLab**
